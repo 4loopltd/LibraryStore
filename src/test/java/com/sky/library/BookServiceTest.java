@@ -82,27 +82,7 @@ class BookServiceTest {
     }
 
     @Test
-    void getBookSummaryEight()  throws Exception{
-
-        //Given
-        Book book = mock(Book.class);
-        when(book.getReference()).thenReturn("Ref");
-        when(book.getTitle()).thenReturn("Title");
-        when(book.getReview()).thenReturn("One Two Three Four Five Six Seven Eight.");
-        BookRepository repo = mock(BookRepository.class);
-        when(repo.retrieveBook(anyString())).thenReturn(book);
-
-        BookServiceImpl mockedService = new BookServiceImpl(repo);
-
-        //When
-        String summary = mockedService.getBookSummary("BOOK-ANYTHINGWILLDO");
-
-        //Then
-        assertEquals("[Ref] Title - One Two Three Four Five Six Seven Eight.", summary);
-    }
-
-    @Test
-    void getBookSummaryNine()  throws Exception{
+    void getBookSummaryNineWords()  throws Exception{
 
         //Given
         Book book = mock(Book.class);
@@ -122,7 +102,7 @@ class BookServiceTest {
     }
 
     @Test
-    void getBookSummaryTen()  throws Exception{
+    void getBookSummaryTenWords()  throws Exception{
 
         //Given
         Book book = mock(Book.class);

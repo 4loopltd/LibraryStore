@@ -3,6 +3,7 @@ package com.sky.library;
 public class BookServiceImpl implements BookService {
 
     private static final String BOOK_REFERENCE_PREFIX = "BOOK-";
+    private static int MAX_WORDS = 9;
 
     private BookRepository repository;
 
@@ -34,21 +35,24 @@ public class BookServiceImpl implements BookService {
 
         Book book = this.retrieveBook(bookReference);
 
+        //Summary format '[Reference] Title - Review'
         StringBuilder summary = new StringBuilder();
         summary.append("[").append(book.getReference()).append("] ");
         summary.append(book.getTitle()).append(" - ");
 
-        // replace with string joiner...
+        // Max nine words
         StringBuilder reviewTrunc = new StringBuilder();
         String[] words = book.getReview().split("\\s+");
         int i=0;
-        for(; i<words.length && i <9; i++){
+        for(; i<words.length && i <MAX_WORDS; i++){
             if(i!=0){
                 reviewTrunc.append(" ");
             }
             reviewTrunc.append(words[i]);
         }
-        if (i < words.length-1){
+
+        if (i < words.length){
+            //Truncate and remove trailing non-alphanumeric chars
             if(!reviewTrunc.substring(reviewTrunc.length()-1).matches("[a-zA-Z0-9]")){
                 reviewTrunc.deleteCharAt(reviewTrunc.length()-1);
             }
