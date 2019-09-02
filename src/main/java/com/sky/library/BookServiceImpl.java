@@ -1,5 +1,8 @@
 package com.sky.library;
 
+/**
+ * @author <a href="mailto:email@phil-milne.co.uk">Phil Milne</a>
+ */
 public class BookServiceImpl implements BookService {
 
     private static final String BOOK_REFERENCE_PREFIX = "BOOK-";
