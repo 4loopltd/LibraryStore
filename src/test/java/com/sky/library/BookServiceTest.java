@@ -1,14 +1,13 @@
 package com.sky.library;
 
 import org.junit.jupiter.api.*;
-import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class BookServiceTest {
 
-    BookService classUnderTest;
+    private BookService classUnderTest;
 
     @BeforeEach
     void setUp() {
@@ -21,7 +20,7 @@ class BookServiceTest {
 
     @Test
     void retrieveBookInvalidText() {
-        Exception exception = assertThrows(BookNotFoundException.class, () -> {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             classUnderTest.retrieveBook("INVALID-TEXT");
         });
 
@@ -45,7 +44,7 @@ class BookServiceTest {
 
     @Test
     void getBookSummaryInvalidText() {
-        Exception exception = assertThrows(BookNotFoundException.class, () -> {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             classUnderTest.getBookSummary("INVALID-TEXT");
         });
 
@@ -62,22 +61,18 @@ class BookServiceTest {
     @Test
     void getBookSummaryShort() throws Exception{
         String summary = classUnderTest.getBookSummary("BOOK-GRUFF472");
-
         assertEquals("[BOOK-GRUFF472] The Gruffalo - A mouse taking a walk in the woods.", summary);
     }
 
     @Test
     void getBookSummaryMedium()  throws Exception{
         String summary = classUnderTest.getBookSummary("BOOK-POOH222");
-
         assertEquals("[BOOK-POOH222] Winnie The Pooh - In this first volume, we meet all the friends...", summary);
     }
 
     @Test
     void getBookSummaryLong() throws Exception{
-
         String summary = classUnderTest.getBookSummary("BOOK-WILL987");
-
         assertEquals("[BOOK-WILL987] The Wind In The Willows - With the arrival of spring and fine weather outside...", summary);
     }
 

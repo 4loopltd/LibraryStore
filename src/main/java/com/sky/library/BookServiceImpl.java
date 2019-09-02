@@ -3,9 +3,10 @@ package com.sky.library;
 public class BookServiceImpl implements BookService {
 
     private static final String BOOK_REFERENCE_PREFIX = "BOOK-";
-    private static int MAX_WORDS = 9;
+    private static final int MAX_WORDS = 9;
+    private static final String ELLIPSIS = "...";
 
-    private BookRepository repository;
+    private final BookRepository repository;
 
     public BookServiceImpl(BookRepository repository) {
         this.repository = repository;
@@ -14,7 +15,7 @@ public class BookServiceImpl implements BookService {
     public Book retrieveBook(String bookReference) throws BookNotFoundException {
 
         if(!bookReference.startsWith(BOOK_REFERENCE_PREFIX)){
-            throw new BookNotFoundException("Reference must begin with 'BOOK-' ");
+            throw new IllegalArgumentException("Reference must begin with 'BOOK-' : " + bookReference);
         }
 
         Book book = repository.retrieveBook(bookReference);
@@ -56,7 +57,7 @@ public class BookServiceImpl implements BookService {
             if(!reviewTrunc.substring(reviewTrunc.length()-1).matches("[a-zA-Z0-9]")){
                 reviewTrunc.deleteCharAt(reviewTrunc.length()-1);
             }
-            reviewTrunc.append("...");
+            reviewTrunc.append(ELLIPSIS);
         }
 
         summary.append(reviewTrunc);
