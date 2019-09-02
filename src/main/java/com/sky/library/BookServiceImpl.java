@@ -35,29 +35,27 @@ public class BookServiceImpl implements BookService {
         Book book = this.retrieveBook(bookReference);
 
         StringBuilder summary = new StringBuilder();
-        summary.append(book.getReference());
-        summary.append(book.getTitle());
+        summary.append("[").append(book.getReference()).append("] ");
+        summary.append(book.getTitle()).append(" - ");
 
+        // replace with string joiner...
         StringBuilder reviewTrunc = new StringBuilder();
-        String[] words = book.getReview().split("\\s");
+        String[] words = book.getReview().split("\\s+");
         int i=0;
         for(; i<words.length && i <9; i++){
-            reviewTrunc.append(words[i]);
-            if (i < words.length-1){
+            if(i!=0){
                 reviewTrunc.append(" ");
             }
+            reviewTrunc.append(words[i]);
         }
         if (i < words.length-1){
+            if(!reviewTrunc.substring(reviewTrunc.length()-1).matches("[a-zA-Z0-9]")){
+                reviewTrunc.deleteCharAt(reviewTrunc.length()-1);
+            }
             reviewTrunc.append("...");
         }
 
-        if(book.getReview().length() <= 9) {
-            summary.append(book.getReview());
-        }
-        else{
-            summary.append(book.getReview().substring(0,9));
-            summary.append("...");
-        }
+        summary.append(reviewTrunc);
 
         return summary.toString();
     }

@@ -1,44 +1,143 @@
 package com.sky.library;
 
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.*;
+import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 class BookServiceTest {
 
     BookService classUnderTest;
 
-    @org.junit.jupiter.api.BeforeEach
+    @BeforeEach
     void setUp() {
         classUnderTest = new BookServiceImpl(new BookRepositoryStub());
     }
 
-    @org.junit.jupiter.api.AfterEach
+    @AfterEach
     void tearDown() {
     }
 
-    @org.junit.jupiter.api.Test
-    void retrieveBookInvalidText() throws Exception{
-        classUnderTest.retrieveBook("INVALID-TEXT");
+    @Test
+    void retrieveBookInvalidText() {
+        Exception exception = assertThrows(BookNotFoundException.class, () -> {
+            classUnderTest.retrieveBook("INVALID-TEXT");
+        });
+
+        assertTrue(exception.getMessage().contains("Reference must begin with 'BOOK-'"));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void retrieveBookNotFound() {
-        Assertions.assertThrows(BookNotFoundException.class, () -> {
+        assertThrows(BookNotFoundException.class, () -> {
             classUnderTest.retrieveBook("BOOK-999");
         });
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void retrieveBookValidText() throws Exception{
         Book book = classUnderTest.retrieveBook("BOOK-GRUFF472");
 
-        Assertions.assertNotNull(book);
-        Assertions.assertEquals("The Gruffalo", book.getTitle());
+        assertNotNull(book);
+        assertEquals("The Gruffalo", book.getTitle());
     }
 
-    @org.junit.jupiter.api.Test
-    void getBookSummary() {
-        fail();
+    @Test
+    void getBookSummaryInvalidText() {
+        Exception exception = assertThrows(BookNotFoundException.class, () -> {
+            classUnderTest.getBookSummary("INVALID-TEXT");
+        });
+
+        assertTrue(exception.getMessage().contains("Reference must begin with 'BOOK-'"));
+    }
+
+    @Test
+    void getBookSummaryNotFound() {
+        assertThrows(BookNotFoundException.class, () -> {
+            classUnderTest.getBookSummary("BOOK-999");
+        });
+    }
+
+    @Test
+    void getBookSummaryShort() throws Exception{
+        String summary = classUnderTest.getBookSummary("BOOK-GRUFF472");
+
+        assertEquals("[BOOK-GRUFF472] The Gruffalo - A mouse taking a walk in the woods.", summary);
+    }
+
+    @Test
+    void getBookSummaryMedium()  throws Exception{
+        String summary = classUnderTest.getBookSummary("BOOK-POOH222");
+
+        assertEquals("[BOOK-POOH222] Winnie The Pooh - In this first volume, we meet all the friends...", summary);
+    }
+
+    @Test
+    void getBookSummaryLong() throws Exception{
+
+        String summary = classUnderTest.getBookSummary("BOOK-WILL987");
+
+        assertEquals("[BOOK-WILL987] The Wind In The Willows - With the arrival of spring and fine weather outside...", summary);
+    }
+
+    @Test
+    void getBookSummaryEight()  throws Exception{
+
+        //Given
+        Book book = mock(Book.class);
+        when(book.getReference()).thenReturn("Ref");
+        when(book.getTitle()).thenReturn("Title");
+        when(book.getReview()).thenReturn("One Two Three Four Five Six Seven Eight.");
+        BookRepository repo = mock(BookRepository.class);
+        when(repo.retrieveBook(anyString())).thenReturn(book);
+
+        BookServiceImpl mockedService = new BookServiceImpl(repo);
+
+        //When
+        String summary = mockedService.getBookSummary("BOOK-ANYTHINGWILLDO");
+
+        //Then
+        assertEquals("[Ref] Title - One Two Three Four Five Six Seven Eight.", summary);
+    }
+
+    @Test
+    void getBookSummaryNine()  throws Exception{
+
+        //Given
+        Book book = mock(Book.class);
+        when(book.getReference()).thenReturn("Ref");
+        when(book.getTitle()).thenReturn("Title");
+        when(book.getReview()).thenReturn("One Two Three Four Five Six Seven Eight Nine.");
+        BookRepository repo = mock(BookRepository.class);
+        when(repo.retrieveBook(anyString())).thenReturn(book);
+
+        BookServiceImpl mockedService = new BookServiceImpl(repo);
+
+        //When
+        String summary = mockedService.getBookSummary("BOOK-ANYTHINGWILLDO");
+
+        //Then
+        assertEquals("[Ref] Title - One Two Three Four Five Six Seven Eight Nine.", summary);
+    }
+
+    @Test
+    void getBookSummaryTen()  throws Exception{
+
+        //Given
+        Book book = mock(Book.class);
+        when(book.getReference()).thenReturn("Ref");
+        when(book.getTitle()).thenReturn("Title");
+        when(book.getReview()).thenReturn("One Two Three Four Five Six Seven Eight Nine Ten.");
+        BookRepository repo = mock(BookRepository.class);
+        when(repo.retrieveBook(anyString())).thenReturn(book);
+
+        BookServiceImpl mockedService = new BookServiceImpl(repo);
+
+        //When
+        String summary = mockedService.getBookSummary("BOOK-ANYTHINGWILLDO");
+
+        //Then
+        assertEquals("[Ref] Title - One Two Three Four Five Six Seven Eight Nine...", summary);
     }
 }

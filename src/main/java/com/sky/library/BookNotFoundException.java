@@ -7,7 +7,7 @@ package com.sky.library;
 
 public class BookNotFoundException extends Exception {
 
-    public BookNotFoundException(String s) {
-        super(s);
+    public BookNotFoundException(String message) {
+        super(message);
     }
 }
