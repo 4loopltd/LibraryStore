@@ -20,18 +20,18 @@ class BookServiceTest {
 
     @Test
     void retrieveBookInvalidText() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            classUnderTest.retrieveBook("INVALID-TEXT");
-        });
+        Exception exception = assertThrows(IllegalArgumentException.class, () ->
+                classUnderTest.retrieveBook("INVALID-TEXT")
+        );
 
         assertTrue(exception.getMessage().contains("Reference must begin with 'BOOK-'"));
     }
 
     @Test
     void retrieveBookNotFound() {
-        assertThrows(BookNotFoundException.class, () -> {
-            classUnderTest.retrieveBook("BOOK-999");
-        });
+        assertThrows(BookNotFoundException.class, () ->
+            classUnderTest.retrieveBook("BOOK-999")
+        );
     }
 
     @Test
@@ -44,18 +44,18 @@ class BookServiceTest {
 
     @Test
     void getBookSummaryInvalidText() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            classUnderTest.getBookSummary("INVALID-TEXT");
-        });
+        Exception exception = assertThrows(IllegalArgumentException.class, () ->
+                classUnderTest.getBookSummary("INVALID-TEXT")
+        );
 
         assertTrue(exception.getMessage().contains("Reference must begin with 'BOOK-'"));
     }
 
     @Test
     void getBookSummaryNotFound() {
-        assertThrows(BookNotFoundException.class, () -> {
-            classUnderTest.getBookSummary("BOOK-999");
-        });
+        assertThrows(BookNotFoundException.class, () ->
+                classUnderTest.getBookSummary("BOOK-999")
+        );
     }
 
     @Test
